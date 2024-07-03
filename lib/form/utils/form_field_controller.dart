@@ -192,12 +192,12 @@ class NameFormFieldController extends FormFieldController {
   bool _strictFormatter = false;
 
   NameFormFieldController(Key fieldKey,
-      {bool required = true, this.requiredText})
-      : super(fieldKey, required: required);
+      {bool required = true, this.requiredText,int? maxLength})
+      : super(fieldKey, required: required, maxLength: maxLength ?? 25);
 
   NameFormFieldController.strict(Key fieldKey,
-      {bool required = true, this.requiredText})
-      : super(fieldKey, required: required) {
+      {bool required = true, this.requiredText,int? maxLength})
+      : super(fieldKey, required: required, maxLength: maxLength ?? 25) {
     _strictFormatter = true;
   }
 
