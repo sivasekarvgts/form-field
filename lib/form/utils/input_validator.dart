@@ -92,13 +92,12 @@ class InputValidator {
     return null;
   }
 
-  static String? numberValidator(String? value, { String? requiredText , double? maxNumber}) {
-    if (value?.trim()?.isEmpty != false)
-      return requiredText ?? "Required !";
+  static String? numberValidator(String? value,
+      {String? requiredText, double? maxNumber}) {
+    if (value?.trim()?.isEmpty != false) return requiredText ?? "Required !";
 
-    if(maxNumber!=null && value!=null)
-      if(double.parse(value) > maxNumber)
-        return "Value must be less than $maxNumber!";
+    if (maxNumber != null && value != null) if (double.parse(value) > maxNumber)
+      return "Value must be less than $maxNumber!";
 
     if ((value?.trim()?.split("-").length ?? 0) > 2) {
       return requiredText ?? "Invalid Number !";
@@ -116,13 +115,13 @@ class InputValidator {
   }
 
   static String? emailValidator(String? value, {String? requiredText}) {
-    if (value?.trim().isEmpty != false) return requiredText ?? "Required !";
+    if (value?.trim().isEmpty != false) return requiredText ?? "Required!";
 
-    // r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$"
+    // Updated regex to match RFC 5321/5322 compliant email addresses.
+    const pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$";
 
-    if (!RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value!)) {
+    if (!RegExp(pattern).hasMatch(value!)) {
       return "Please enter a valid Email";
     }
 
@@ -185,7 +184,8 @@ class InputValidator {
       return requiredText ?? 'Required !';
     } else {
       if (!regex.hasMatch(value!)) {
-        return requiredText ?? "Password must be atleast 8 characters that include lowercase,\nuppercase character, special character & number ";
+        return requiredText ??
+            "Password must be atleast 8 characters that include lowercase,\nuppercase character, special character & number ";
       } else {
         return null;
       }
