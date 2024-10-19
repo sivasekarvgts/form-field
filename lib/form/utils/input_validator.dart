@@ -119,7 +119,7 @@ class InputValidator {
 
     // Updated regex to match RFC 5321/5322 compliant email addresses.
     const pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$";
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
 
     if (!RegExp(pattern).hasMatch(value!)) {
       return "Please enter a valid Email";
