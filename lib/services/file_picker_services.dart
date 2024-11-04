@@ -9,6 +9,7 @@ class FilePickerServices {
       {List<String>? allowedExtensions,
       String? dialogTitle,
       String? waterMarkText,
+      bool isWaterMater = true,
       bool allowMultiple = false,
       FileType type = FileType.custom}) async {
     try {
@@ -22,7 +23,9 @@ class FilePickerServices {
         for (final path in res!.paths) {
           if (path!.contains('.jpg') || path.contains('.png')) {
             final waterMarkImages = await ImagePickerService().addWaterMarks(
-                files: [File(path)], waterMarkText: waterMarkText);
+                isWaterMater: isWaterMater,
+                files: [File(path)],
+                waterMarkText: waterMarkText);
             if (waterMarkImages != null) files.add(waterMarkImages.first);
           } else {
             files.add(File(path));
