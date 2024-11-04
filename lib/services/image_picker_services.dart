@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vgts_plugin/widget/choose_image_widget.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'add_text_watermark.dart';
 
@@ -54,7 +54,8 @@ class ImagePickerService {
       }
 
       List<File> waterMarkFiles =
-          await addWaterMarks(files: files, isWaterMater: true) ?? files;
+          await addWaterMarks(files: files, isWaterMater: isWaterMater) ??
+              files;
 
       files = waterMarkFiles;
 
@@ -73,8 +74,8 @@ class ImagePickerService {
     if (isWaterMater && files?.isNotEmpty == true) {
       for (final e in files!) {
         final formatter = DateFormat('dd/MM/yyyy h:mm a');
-        final waterMarkFile = await AddTextWaterMark.addTextWaterMark(e,
-            text: waterMarkText ?? '${formatter.format(DateTime.now())}');
+        final waterMarkFile = await AddTextWaterMark.addTextWaterMark(
+            e, waterMarkText ?? '${formatter.format(DateTime.now())}');
         waterMarkFiles.add(waterMarkFile!);
       }
       files = waterMarkFiles;

@@ -1,17 +1,44 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
 sealed class AddTextWaterMark {
   const AddTextWaterMark._();
 
-  static Future<File>? addTextWaterMark(File? image, {String? text}) async {
-    final originalImage = img.decodeImage(image!.readAsBytesSync());
+  static Future<File?> addTextWaterMark(
+      File imageFile, String watermarkText) async {
+    final token = RootIsolateToken.instance!;
+
+    final result = await compute(_watermarkInIsolate, {
+      'token': token,
+      'imageFilePath': imageFile.path,
+      'watermarkText': watermarkText,
+    });
+
+    return result;
+  }
+
+  // static Future<File>? addTextWaterMark(File? image, {String? text}) async {
+  //   final originalImage = img.decodeImage(image!.readAsBytesSync());
+  static Future<File?> _watermarkInIsolate(Map<String, dynamic> params) async {
+    BackgroundIsolateBinaryMessenger.ensureInitialized(params['token']);
+
+    final String imagePath = params['imageFilePath'];
+    final String watermarkText = params['watermarkText'];
+
+    final File imageFile = File(imagePath);
+    final Uint8List imageBytes = await imageFile.readAsBytes();
+    final img.Image? originalImage = img.decodeImage(imageBytes);
+
+    if (originalImage == null) return null;
+
     img.drawString(
-      originalImage!,
-      text!,
+      originalImage,
+      watermarkText,
       font: img.arial24,
       x: originalImage.width - 235,
       y: originalImage.height - 60,
